@@ -1,11 +1,12 @@
 import React from "react";
 import "../components/Home.css";
+import LogoIcon from "./image/umbrella.png"
 
 function Home({ setCurrentPage }) {
   return (
     <div className="home">
       <section className="header">
-        <h2>ICON</h2>
+      <img src={LogoIcon} className="Home-LogoIcon" alt="LogoIcon" />
       </section>
 
       <section className="mid">
