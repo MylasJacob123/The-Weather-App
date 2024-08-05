@@ -136,16 +136,18 @@ function Fetch() {
   return (
     <div className="container">
       <h1>Weather Update</h1>
-      <input
-        type="text"
-        id="locationInput"
-        placeholder="Enter a city"
-        value={location}
-        onChange={(e) => setLocation(e.target.value)}
-      />
-      <button id="searchButton" onClick={handleSearch}>
-        Search
-      </button>
+      <div className="align">
+        <input
+          type="text"
+          id="locationInput"
+          placeholder="Enter a city"
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
+        />
+        <button id="searchButton" onClick={handleSearch}>
+          Search
+        </button>
+      </div>
       {error && <p className="error">{error}</p>}
 
       {weather.description && (
@@ -154,7 +156,9 @@ function Fetch() {
             src={getWeatherImage(weather.description).url}
             alt={getWeatherImage(weather.description).alt}
           />
-          <p>{getWeatherImage(weather.description).explanation}</p>
+          <p className="description">
+            {getWeatherImage(weather.description).explanation}
+          </p>
         </div>
       )}
 
@@ -162,50 +166,18 @@ function Fetch() {
         {weather.location && (
           <div className="weather-info">
             <h2 id="location">{weather.location}</h2>
-            <table>
-              <tbody>
-                <tr>
-                  <td>Temperature:</td>
-                  <td id="temperature">{weather.temperature}°C</td>
-                </tr>
-                <tr>
-                  <td>Feels Like:</td>
-                  <td id="feels_like">{weather.feels_like}°C</td>
-                </tr>
-                <tr>
-                  <td>Min Temp:</td>
-                  <td id="temp_min">{weather.temp_min}°C</td>
-                </tr>
-                <tr>
-                  <td>Max Temp:</td>
-                  <td id="temp_max">{weather.temp_max}°C</td>
-                </tr>
-                <tr>
-                  <td>Pressure:</td>
-                  <td id="pressure">{weather.pressure} hPa</td>
-                </tr>
-                <tr>
-                  <td>Humidity:</td>
-                  <td id="humidity">{weather.humidity}%</td>
-                </tr>
-                <tr>
-                  <td>Wind Speed:</td>
-                  <td id="wind_speed">{weather.wind_speed} m/s</td>
-                </tr>
-                <tr>
-                  <td>Wind Direction:</td>
-                  <td id="wind_deg">{weather.wind_deg}°</td>
-                </tr>
-                <tr>
-                  <td>Visibility:</td>
-                  <td id="visibility">{weather.visibility} m</td>
-                </tr>
-                <tr>
-                  <td>Weather:</td>
-                  <td id="description">{weather.description}</td>
-                </tr>
-              </tbody>
-            </table>
+            <div className="grid-container">
+              <div className="grid-item" id="temperature">Temperature: {weather.temperature}°C</div>
+              <div className="grid-item" id="feels_like">Feels Like: {weather.feels_like}°C</div>
+              <div className="grid-item" id="temp_min">Min Temp: {weather.temp_min}°C</div>
+              <div className="grid-item" id="temp_max">Max Temp: {weather.temp_max}°C</div>
+              <div className="grid-item" id="pressure">Pressure: {weather.pressure} hPa</div>
+              <div className="grid-item" id="humidity">Humidity: {weather.humidity}%</div>
+              <div className="grid-item" id="wind_speed">Wind Speed: {weather.wind_speed} m/s</div>
+              <div className="grid-item" id="wind_deg">Wind Direction: {weather.wind_deg}°</div>
+              <div className="grid-item" id="visibility">Visibility: {weather.visibility} m</div>
+              <div className="grid-item" id="description">Weather: {weather.description}</div>
+            </div>
           </div>
         )}
       </div>
