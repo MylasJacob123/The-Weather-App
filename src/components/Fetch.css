@@ -1,0 +1,55 @@
+.container {
+    text-align: center;
+    margin-top: 50px;
+    max-width: 100%;
+    overflow: auto; 
+}
+
+h1 {
+    color: whitesmoke;
+}
+
+input#locationInput {
+    padding: 10px;
+    min-width: 270px;
+    min-height: 30px;
+    margin-right: 10px;
+    border-radius: 9px;
+    font-size: 18px;
+}
+
+button#searchButton {
+    padding: 10px 20px;
+    min-width: 120px;
+    min-height: 55px;
+    border-radius: 9px;
+    font-size: 18px;
+    background-color: #024b99;
+}
+
+.weather-info {
+    margin-top: 20px;
+}
+
+.weather-info table {
+    margin: 0 auto;
+    border-collapse: collapse;
+}
+
+.weather-info table, .weather-info td, .weather-info th {
+    border: 5px #024b99;
+    padding: 10px;
+}
+
+.weather-info th {
+    background-color: #f2f2f2;
+}
+
+.error {
+    color: red;
+    margin-top: 10px;
+}
+
+.info {
+    color: whitesmoke;
+}
