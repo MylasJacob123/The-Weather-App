@@ -1,17 +1,26 @@
 .home {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: rgb(3, 3, 17);
-    height: 80vh;
-    width: 60%;
-    border-radius: 40px;
-    gap: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(3, 3, 17);
+  height: auto;
+  width: 60%;
+  border-radius: 40px;
+  gap: 20px;
+  padding: 20px; 
+  position: relative; 
+}
+
+.privacy-button-wrapper {
+  position: absolute;
+  top: 20px;
+  right: 20px;
 }
 
 .header {
-    background-color: whitesmoke;
+  background-color: whitesmoke;
+  padding: 10px;
 }
 
 .Home-LogoIcon {
@@ -20,7 +29,7 @@
 
 .mid {
   line-height: 30px;
-    text-align: center;
+  text-align: center;
 }
 
 .font {
@@ -34,36 +43,49 @@
   color: whitesmoke;
 }
 
-.last {}
+.privacy-policy-button {
+  cursor: pointer;
+  font-weight: 700;
+  transition: background 0.2s;
+  padding: 10px 20px;
+  border-radius: 100px;
+  background: #024b99;
+  border: 1px solid transparent;
+  font-size: 15px;
+  color: whitesmoke;
+}
 
+.privacy-policy-button:hover {
+  background: #007bff;
+}
 
 button {
-    cursor: pointer;
-    font-weight: 700;
-    transition: all .2s;
-    padding: 10px 20px;
-    border-radius: 100px;
-    background: #024b99;
-    border: 1px solid transparent;
-    display: flex;
-    align-items: center;
-    font-size: 15px;
-  }
-  
-  button:hover {
-    background: #007bff;
-  }
-  
-  button > svg {
-    width: 34px;
-    margin-left: 10px;
-    transition: transform .3s ease-in-out;
-  }
-  
-  button:hover svg {
-    transform: translateX(5px);
-  }
-  
-  button:active {
-    transform: scale(0.95);
-  }
+  cursor: pointer;
+  font-weight: 700;
+  transition: background 0.2s;
+  padding: 10px 20px;
+  border-radius: 100px;
+  background: #024b99;
+  border: 1px solid transparent;
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+}
+
+button:hover {
+  background: #007bff;
+}
+
+button > svg {
+  width: 34px;
+  margin-left: 10px;
+  transition: transform 0.3s ease-in-out;
+}
+
+button:hover svg {
+  transform: translateX(5px);
+}
+
+button:active {
+  transform: scale(0.95);
+}

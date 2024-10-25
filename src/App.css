@@ -1,5 +1,8 @@
 body {
-  background-color: black;
+  background-color: #1a1a1a; 
+  color: #f5f5f5; 
+  font-family: 'Arial', sans-serif; 
+  margin: 0; 
 }
 
 .App {
@@ -7,9 +10,9 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-width: 100vh;
-  min-height: 100vh;
-  text-align: center;
+  min-width: 100%;
+  min-height: auto;
+  margin-top: 8rem;
 }
 
 nav {
@@ -22,10 +25,22 @@ nav {
 button {
   padding: 10px 20px;
   cursor: pointer;
+  font-weight: bold; 
+  border: none; 
+  border-radius: 5px;
+  background-color: #024b99; 
+  color: white;
+  transition: background-color 0.3s ease; 
+}
+
+button:hover {
+  background-color: #007bff; 
 }
 
 .content {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column; 
+  width: 100%; 
 }

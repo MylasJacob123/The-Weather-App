@@ -1,12 +1,22 @@
 import React from "react";
 import "../components/Home.css";
-import LogoIcon from "./image/umbrella.png"
+import LogoIcon from "./image/umbrella.png";
 
 function Home({ setCurrentPage }) {
   return (
     <div className="home">
+      {/* Privacy Policy button wrapper */}
+      <div className="privacy-button-wrapper">
+        <button
+          className="privacy-policy-button"
+          onClick={() => setCurrentPage("PrivacyAndData")}
+        >
+          Privacy Policy
+        </button>
+      </div>
+
       <section className="header">
-      <img src={LogoIcon} className="Home-LogoIcon" alt="LogoIcon" />
+        <img src={LogoIcon} className="Home-LogoIcon" alt="LogoIcon" />
       </section>
 
       <section className="mid">
