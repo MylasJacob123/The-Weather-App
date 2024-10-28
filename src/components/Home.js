@@ -25,7 +25,7 @@ function Home({ setCurrentPage }) {
       </section>
 
       <section className="last">
-        <button onClick={() => setCurrentPage("Body")}>
+        <button className="home-btn" onClick={() => setCurrentPage("Body")}>
           <span>Weather Update</span>
           <svg
             width="34"

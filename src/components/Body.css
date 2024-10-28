@@ -1,4 +1,4 @@
-.body {
+/* .body {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -6,7 +6,7 @@
     box-sizing: border-box;
     background-color: rgb(3, 3, 17);
     height: auto;
-    width: 60%;
+    width: 100%;
     border-radius: 40px;
     line-height: 20px;
 }
@@ -40,4 +40,4 @@
   
   button:active .button_top {
     transform: translateY(0);
-  }
+  } */

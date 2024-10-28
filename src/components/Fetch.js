@@ -98,35 +98,11 @@ function Fetch() {
   const [forecast, setForecast] = useState([]);
   const [error, setError] = useState(null);
   const [isOnline, setIsOnline] = useState(navigator.onLine);
-  const [lat, setLat] = useState(null);  // State for latitude
-  const [long, setLong] = useState(null); // State for longitude
-  const Api_Key = "6d7cbb7b547682792911c7f04f7a5ca4";
-
-  // Geolocation handler
-  const handleGeolocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setLat(position.coords.latitude);
-          setLong(position.coords.longitude);
-        },
-        () => setError("Failed to get your current location.")
-      );
-    } else {
-      setError("Geolocation is not supported by this browser.");
-    }
-  };
+  const [unit, setUnit] = useState("metric"); // metric for Celsius
+  const [theme, setTheme] = useState("light"); // light theme by default
+  const Api_Key = "6d7cbb7b547682792911c7f04f7a5ca4"; // Replace with your OpenWeather API key
 
   useEffect(() => {
-    handleGeolocation(); // Call geolocation on mount
-  }, []);
-
-  useEffect(() => {
-    const storedWeather = localStorage.getItem("weatherData");
-    if (storedWeather) {
-      setWeather(JSON.parse(storedWeather));
-    }
-
     const handleOnline = () => setIsOnline(true);
     const handleOffline = () => setIsOnline(false);
 
@@ -139,27 +115,35 @@ function Fetch() {
     };
   }, []);
 
-  const fetchWeatherData = async () => {
-    let query = location;
-
-    // Use coordinates if available
-    if (lat && long) {
-      query = `${lat},${long}`;
+  useEffect(() => {
+    // Fetch current location weather on component mount
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          fetchWeatherDataByCoords(latitude, longitude);
+        },
+        (error) => {
+          console.error("Error getting location:", error);
+          setError("Could not retrieve current location. Please search for a city.");
+        }
+      );
     }
+  }, []);
 
-    if (!query) return;
+  const fetchWeatherData = async () => {
+    if (!location) return;
 
     try {
       const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?q=${query}&appid=${Api_Key}&units=metric`
+        `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${Api_Key}&units=${unit}`
       );
 
-      console.log("Response Status:", response.status);
       const data = await response.json();
 
       if (response.ok) {
         setWeather({
-          location: data.name || "Current Location", // Fallback to "Current Location" if no name
+          location: data.name,
           temperature: data.main.temp,
           feels_like: data.main.feels_like,
           temp_min: data.main.temp_min,
@@ -172,8 +156,7 @@ function Fetch() {
           description: data.weather[0].description,
         });
 
-        // Fetch the forecast using the new method
-        fetchForecast(data.name);
+        fetchForecast();
         setError(null);
       } else {
         setError(data.message || "Something went wrong. Please try again.");
@@ -181,7 +164,6 @@ function Fetch() {
       }
     } catch (error) {
       setError("Failed to fetch Weather Data. Please Try Again.");
-      console.error("Fetch error:", error);
       const storedWeather = localStorage.getItem("weatherData");
       if (storedWeather) {
         setWeather(JSON.parse(storedWeather));
@@ -189,101 +171,146 @@ function Fetch() {
     }
   };
 
-  const fetchForecast = async (location) => {
-    // ... [rest of the fetchForecast function remains unchanged]
+  const fetchWeatherDataByCoords = async (lat, lon) => {
+    try {
+      const response = await fetch(
+        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${Api_Key}&units=${unit}`
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setWeather({
+          location: data.name,
+          temperature: data.main.temp,
+          feels_like: data.main.feels_like,
+          temp_min: data.main.temp_min,
+          temp_max: data.main.temp_max,
+          pressure: data.main.pressure,
+          humidity: data.main.humidity,
+          wind_speed: data.wind.speed,
+          wind_deg: data.wind.deg,
+          visibility: data.visibility,
+          description: data.weather[0].description,
+        });
+
+        fetchForecast();
+        setError(null);
+      } else {
+        setError(data.message || "Something went wrong. Please try again.");
+      }
+    } catch (error) {
+      setError("Failed to fetch Weather Data. Please Try Again.");
+    }
   };
 
-  useEffect(() => {
-    if (isOnline) {
-      fetchWeatherData();
-    }
-  }, [location, isOnline, lat, long]); // Add lat and long as dependencies
+  const fetchForecast = async () => {
+    if (!location) return;
 
-  useEffect(() => {
-    localStorage.setItem("weatherData", JSON.stringify(weather));
-  }, [weather]);
+    try {
+      const response = await fetch(
+        `https://api.openweathermap.org/data/2.5/forecast?q=${location}&appid=${Api_Key}&units=${unit}`
+      );
 
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      if (isOnline) {
-        fetchWeatherData();
+      const data = await response.json();
+
+      if (response.ok) {
+        const dailyForecast = data.list.filter((_, index) => index % 8 === 0).slice(0, 5);
+        setForecast(dailyForecast);
+      } else {
+        setError(data.message || "Unable to fetch forecast.");
       }
-    }, 3600000); // 1 hour in milliseconds
+    } catch (error) {
+      setError("Failed to fetch Forecast Data.");
+    }
+  };
 
-    return () => clearInterval(intervalId);
-  }, [isOnline]);
+  const handleLocationChange = (e) => {
+    setLocation(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    fetchWeatherData();
+  };
+
+  const toggleTheme = () => {
+    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
+  };
+
+  const toggleUnit = () => {
+    setUnit((prevUnit) => (prevUnit === "metric" ? "imperial" : "metric"));
+  };
+
+  const convertTemperature = (temp) => {
+    if (unit === "imperial") {
+      return (temp * 9) / 5 + 32; // Convert Celsius to Fahrenheit
+    }
+    return temp; // Return Celsius
+  };
+  const weatherImage = getWeatherImage(weather.description);
 
   return (
-    <div className="container">
-      <h1>Weather Update</h1>
-      <div className="align">
-        <input
-          type="text"
-          id="locationInput"
-          placeholder="Enter a city"
-          value={location}
-          onChange={(e) => setLocation(e.target.value)}
-        />
+    <div className={`container ${theme}`}>
+      <h1>Weather App</h1>
+      <div className="toggle-btn">
+        <button onClick={toggleTheme}>Toggle Theme</button>
+        <button onClick={toggleUnit}>
+          Switch to {unit === "metric" ? "Fahrenheit" : "Celsius"}
+        </button>
       </div>
-      {error && <p className="error">{error}</p>}
-
-      {weather.description && (
-        <div className="weather-image">
-          <img
-            src={getWeatherImage(weather.description).url}
-            alt={getWeatherImage(weather.description).alt}
+      <form onSubmit={handleSubmit} className="controls">
+        <div className="align">
+          <input
+            type="text"
+            value={location}
+            onChange={handleLocationChange}
+            placeholder="Enter City"
+            required
           />
-          <p className="description">
-            {getWeatherImage(weather.description).explanation}
+          <button type="submit">Get Weather</button>
+        </div>
+      </form>
+      {error && <div className="error">{error}</div>}
+      {weather.location && (
+        <div className="info">
+          <h2>{weather.location}</h2>
+          <div className="weather-image">
+            <img src={weatherImage.url} alt={weatherImage.alt} />
+            <p className="description">{weatherImage.explanation}</p>
+          </div>
+          <p>
+            Temperature: {convertTemperature(weather.temperature).toFixed(1)}°{unit === "metric" ? "C" : "F"}
           </p>
+          <p>
+            Feels Like: {convertTemperature(weather.feels_like).toFixed(1)}°{unit === "metric" ? "C" : "F"}
+          </p>
+          <p>Humidity: {weather.humidity}%</p>
+          <p>Pressure: {weather.pressure} hPa</p>
+          <p>Wind Speed: {weather.wind_speed} m/s</p>
+          <p>Visibility: {weather.visibility / 1000} km</p>
         </div>
       )}
-
-      <div className="info">
-        {weather.location && (
-          <div className="weather-info">
-            <h2 id="location">{weather.location}</h2>
-            <div className="grid-container">
-              <div className="grid-item" id="temperature">
-                Temperature: {weather.temperature}°C
-              </div>
-              <div className="grid-item" id="feels_like">
-                Feels Like: {weather.feels_like}°C
-              </div>
-              <div className="grid-item" id="temp_min">
-                Min Temp: {weather.temp_min}°C
-              </div>
-              <div className="grid-item" id="temp_max">
-                Max Temp: {weather.temp_max}°C
-              </div>
-              <div className="grid-item" id="pressure">
-                Pressure: {weather.pressure} hPa
-              </div>
-              <div className="grid-item" id="humidity">
-                Humidity: {weather.humidity}%
-              </div>
-              <div className="grid-item" id="wind_speed">
-                Wind Speed: {weather.wind_speed} m/s
-              </div>
+       <h3>5-Day Forecast</h3>
+      <div className="forecast">
+       
+        {forecast.map((item, index) => (
+          <div key={index} className="forecast-item">
+            <h4>{new Date(item.dt * 1000).toLocaleDateString()}</h4>
+            <div className="weather-image">
+              <img src={getWeatherImage(item.weather[0].description).url} alt={item.weather[0].description} />
             </div>
+            <p>
+              Temp: {convertTemperature(item.main.temp).toFixed(1)}°{unit === "metric" ? "C" : "F"}
+            </p>
+            <p>Humidity: {item.main.humidity}%</p>
+            <p>{item.weather[0].description}</p>
           </div>
-        )}
+        ))}
       </div>
-
-      {forecast.length > 0 && (
-        <div className="forecast">
-          <h3>5-Day Forecast</h3>
-          <div className="forecast-container">
-            {forecast.map((item, index) => (
-              <div key={index} className="forecast-item">
-                <p>{new Date(item.dt * 1000).toLocaleDateString()}</p>
-                <p>Temp: {item.main.temp}°C</p>
-                <p>{item.weather[0].description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      <div>
+        <h3>{isOnline ? "Online" : "Offline"}</h3>
+      </div>
     </div>
   );
 }

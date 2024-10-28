@@ -1,119 +1,146 @@
-.container {
-  text-align: center;
-  margin-top: 50px;
-  padding-bottom: 25px;
-  display: flex;
-  justify-content: center; 
-  align-items: center;    
-  flex-direction: column; 
-  height: auto;
+:root {
+  --primary-color: #4a90e2; /* Blue color for buttons */
+  --secondary-color: #50e3c2; /* Teal color for accents */
+  --background-light: #f8f9fa; /* Light background */
+  --background-dark: #343a40; /* Dark background */
+  --text-light: #ffffff; /* White text */
+  --text-dark: #212529; /* Dark text */
+  --border-color: #ccc; /* Border color */
+  --error-color: #e74c3c; /* Error color */
 }
 
-h1 {
-  color: #e0e0e0; 
+body {
+  font-family: Arial, sans-serif;
+  background-color: var(--background-dark);
+  color: var(--text-dark);
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.3s, color 0.3s; 
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  width: 100%; 
+  margin: auto;
+  background-color: var(--background-light);
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  gap: 1rem;
+}
+
+.toggle-btn {
+  display: flex;
+  flex-direction: column;
+  align-self: start;
+  gap: 0.5rem;
 }
 
 .align {
   display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
 }
 
-input#locationInput {
-  padding: 10px;
-  min-width: 270px;
-  min-height: 40px; 
-  margin-right: 10px;
-  border-radius: 9px;
-  font-size: 18px;
-  border: 1px solid #ccc; 
+input {
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  width: 300px;
+  transition: border-color 0.3s;
 }
 
-button#searchButton {
-  padding: 10px 20px;
-  min-width: 120px;
-  min-height: 55px;
-  border-radius: 9px;
-  font-size: 18px;
-  background-color: #007bff; 
-  color: white;
+input:focus {
+  border-color: var(--primary-color);
+  outline: none;
+}
+
+.controls {
+  margin-bottom: 15px;
+}
+
+button {
+  padding: 10px 15px;
+  margin: 0 5px;
+  font-size: 16px;
   border: none;
+  border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease; 
+  background-color: var(--primary-color);
+  color: var(--text-light);
+  transition: background-color 0.3s, transform 0.2s;
 }
 
-button#searchButton:hover {
-  background-color: #0056b3; 
+button:hover {
+  background-color: var(--secondary-color);
+  transform: translateY(-2px);
 }
 
 .weather-image {
-  margin-top: 20px;
-}
-
-.weather-info {
-  margin-top: 20px;
-  padding: 15px;
-  border-radius: 10px;
-  background-color: #2a2a2a; 
+  text-align: center;
 }
 
 .description {
-  color: #b0b0b0;
-}
-
-.grid-container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-}
-
-.grid-item {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #1469c4; 
-  padding: 15px; 
-  border-radius: 5px;
-  color: whitesmoke;
-  box-sizing: border-box;
-}
-
-.error {
-  color: #ff4d4d; 
-  margin-top: 10px;
+  margin-top: 5px;
+  font-style: italic;
+  color: var(--secondary-color);
 }
 
 .info {
-  color: #f5f5f5; 
+  background-color: #e9ecef;
+  margin-top: 20px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 1px 1px 1px 1px rgb(199, 199, 199);
+  padding: 3rem;
+  border-radius: 1rem;
 }
 
 .forecast {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* Creates 4 equal columns */
+  gap: 15px; /* Space between the cards */
   margin-top: 20px;
 }
 
-.forecast-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-
 .forecast-item {
-  background: #333; 
-  border: 1px solid #444; 
-  border-radius: 8px;
-  padding: 10px;
-  margin: 5px;
-  text-align: center;
-  flex: 1 1 150px;
+  background-color: #e9ecef;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
 }
 
-.forecast-item img {
-  width: 50px;
-  height: 50px; 
+.forecast-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
-.forecast-text {
-  color: #e0e0e0; 
+
+.error {
+  color: var(--error-color);
+  font-weight: bold;
 }
 
-.status-text {
-  color: #b0b0b0;
+.light {
+  background-color: var(--background-light);
+  color: var(--text-dark);
+}
+
+.dark {
+  background-color: var(--background-dark);
+  color: var(--text-light); /* Set light text for dark mode */
+}
+
+.dark .info{
+  color: var(--background-dark);
+}
+
+.dark .forecast .forecast-item{
+  color: var(--background-dark);
 }

@@ -59,7 +59,7 @@
   background: #007bff;
 }
 
-button {
+.home-btn {
   cursor: pointer;
   font-weight: 700;
   transition: background 0.2s;
@@ -72,20 +72,20 @@ button {
   font-size: 15px;
 }
 
-button:hover {
+.home-btn:hover {
   background: #007bff;
 }
 
-button > svg {
+.home-btn > svg {
   width: 34px;
   margin-left: 10px;
   transition: transform 0.3s ease-in-out;
 }
 
-button:hover svg {
+.home-btn:hover svg {
   transform: translateX(5px);
 }
 
-button:active {
+.home-btn:active {
   transform: scale(0.95);
 }
