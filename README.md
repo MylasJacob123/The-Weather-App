@@ -25,5 +25,5 @@ A simple weather application built with React.js that provides real-time weather
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/your-username/weather-app.git
+git clone https://github.com/MylasJacob123/The-Weather-App
 cd weather-app
