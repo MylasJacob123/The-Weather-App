@@ -104,7 +104,14 @@ function Fetch() {
 
   useEffect(() => {
     const handleOnline = () => setIsOnline(true);
-    const handleOffline = () => setIsOnline(false);
+    const handleOffline = () => {
+      setIsOnline(false);
+
+      const storedWeather = localStorage.getItem("weatherData");
+      if (storedWeather) {
+        setWeather(JSON.parse(storedWeather));
+      }
+    };
 
     window.addEventListener("online", handleOnline);
     window.addEventListener("offline", handleOffline);
@@ -114,6 +121,31 @@ function Fetch() {
       window.removeEventListener("offline", handleOffline);
     };
   }, []);
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          fetchWeatherDataByCoords(latitude, longitude);
+        },
+        (error) => {
+          console.error("Error getting location:", error);
+          setError("Could not retrieve current location. Please search for a city.");
+        }
+      );
+    }
+  }, []);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (isOnline && location) {
+        fetchWeatherData();
+      }
+    }, 3600000);
+
+    return () => clearInterval(intervalId);
+  }, [isOnline, location]);
 
   useEffect(() => {
     if (navigator.geolocation) {
