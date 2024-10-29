@@ -98,9 +98,9 @@ function Fetch() {
   const [forecast, setForecast] = useState([]);
   const [error, setError] = useState(null);
   const [isOnline, setIsOnline] = useState(navigator.onLine);
-  const [unit, setUnit] = useState("metric"); // metric for Celsius
-  const [theme, setTheme] = useState("light"); // light theme by default
-  const Api_Key = "6d7cbb7b547682792911c7f04f7a5ca4"; // Replace with your OpenWeather API key
+  const [unit, setUnit] = useState("metric"); 
+  const [theme, setTheme] = useState("light"); 
+  const Api_Key = "6d7cbb7b547682792911c7f04f7a5ca4";
 
   useEffect(() => {
     const handleOnline = () => setIsOnline(true);
@@ -116,7 +116,6 @@ function Fetch() {
   }, []);
 
   useEffect(() => {
-    // Fetch current location weather on component mount
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -244,9 +243,9 @@ function Fetch() {
 
   const convertTemperature = (temp) => {
     if (unit === "imperial") {
-      return (temp * 9) / 5 + 32; // Convert Celsius to Fahrenheit
+      return (temp * 9) / 5 + 32;
     }
-    return temp; // Return Celsius
+    return temp; 
   };
   const weatherImage = getWeatherImage(weather.description);
 

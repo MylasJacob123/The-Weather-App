@@ -1,12 +1,12 @@
 :root {
-  --primary-color: #4a90e2; /* Blue color for buttons */
-  --secondary-color: #50e3c2; /* Teal color for accents */
-  --background-light: #f8f9fa; /* Light background */
-  --background-dark: #343a40; /* Dark background */
-  --text-light: #ffffff; /* White text */
-  --text-dark: #212529; /* Dark text */
-  --border-color: #ccc; /* Border color */
-  --error-color: #e74c3c; /* Error color */
+  --primary-color: #4a90e2;
+  --secondary-color: #50e3c2;
+  --background-light: #f8f9fa; 
+  --background-dark: #343a40; 
+  --text-light: #ffffff; 
+  --text-dark: #212529; 
+  --border-color: #ccc; 
+  --error-color: #e74c3c; 
 }
 
 body {
@@ -103,8 +103,8 @@ button:hover {
 
 .forecast {
   display: grid;
-  grid-template-columns: repeat(5, 1fr); /* Creates 4 equal columns */
-  gap: 15px; /* Space between the cards */
+  grid-template-columns: repeat(5, 1fr); 
+  gap: 15px; 
   margin-top: 20px;
 }
 
@@ -134,7 +134,7 @@ button:hover {
 
 .dark {
   background-color: var(--background-dark);
-  color: var(--text-light); /* Set light text for dark mode */
+  color: var(--text-light); 
 }
 
 .dark .info{

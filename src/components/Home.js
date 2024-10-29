@@ -5,7 +5,6 @@ import LogoIcon from "./image/umbrella.png";
 function Home({ setCurrentPage }) {
   return (
     <div className="home">
-      {/* Privacy Policy button wrapper */}
       <div className="privacy-button-wrapper">
         <button
           className="privacy-policy-button"
