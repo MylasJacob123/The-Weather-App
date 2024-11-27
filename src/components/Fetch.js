@@ -94,6 +94,9 @@ const getWeatherImage = (description) => {
 
 function Fetch() {
   const [location, setLocation] = useState("");
+  const [savedLocations, setSavedLocations] = useState(
+    JSON.parse(localStorage.getItem("savedLocations")) || []
+  );
   const [weather, setWeather] = useState({});
   const [forecast, setForecast] = useState([]);
   const [error, setError] = useState(null);
@@ -162,6 +165,19 @@ function Fetch() {
     }
   }, []);
 
+  const saveLocation = () => {
+    if (!location || savedLocations.includes(location)) return; 
+    const updatedLocations = [...savedLocations, location];
+    setSavedLocations(updatedLocations); 
+    localStorage.setItem("savedLocations", JSON.stringify(updatedLocations)); 
+  };
+
+  const selectLocation = (selectedLocation) => {
+    setLocation(selectedLocation); 
+    fetchWeatherData(selectedLocation);
+    fetchForecast(selectedLocation); 
+  };
+
   const fetchWeatherData = async () => {
     if (!location) return;
 
@@ -187,7 +203,7 @@ function Fetch() {
           description: data.weather[0].description,
         });
 
-        fetchForecast();
+        fetchForecast(location);
         setError(null);
       } else {
         setError(data.message || "Something went wrong. Please try again.");
@@ -263,6 +279,7 @@ function Fetch() {
   const handleSubmit = (e) => {
     e.preventDefault();
     fetchWeatherData();
+    saveLocation();
   };
 
   const toggleTheme = () => {
@@ -302,6 +319,20 @@ function Fetch() {
           <button type="submit">Get Weather</button>
         </div>
       </form>
+
+      <div>
+        <h3>Saved Locations</h3>
+        <ul>
+          {savedLocations.map((savedLocation, index) => (
+            <li key={index}>
+              <button onClick={() => selectLocation(savedLocation)}>
+                {savedLocation}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+
       {error && <div className="error">{error}</div>}
       {weather.location && (
         <div className="info">
@@ -322,6 +353,7 @@ function Fetch() {
           <p>Visibility: {weather.visibility / 1000} km</p>
         </div>
       )}
+      
        <h3>5-Day Forecast</h3>
       <div className="forecast">
        
